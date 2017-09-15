@@ -1,10 +1,16 @@
-You need to create a django project to manage users.
+You need to create a django project to manage admins of our admin panel.
+
+The objective of the project is to provide the users a means to use the same platform in a restricted manner.
+Only users with a permission to modify or view data will be able to modify or view it.
+
 1. You need to creat 2 db tables:
 ```
   i. Users table: It will contain all the users
   ii. Addresses table: It will contain addresses of users
 ```
-The tables are going to have 2 different views in admin panel, one for each
+The tables are going to have 2 different views in admin panel, one for users and another for addresses
+
+
 2. You need to create 3 different users:
 ```
   i. Admin user: He is going to have all the accesses to CRUD both the tables 
