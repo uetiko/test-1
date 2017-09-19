@@ -3,7 +3,7 @@ You need to create a django project to manage admins of our admin panel.
 The objective of the project is to provide the users a means to use the same platform in a restricted manner.
 Only users with a permission to modify or view data will be able to modify or view it.
 
-1. You need to creat 2 db tables:
+1. You need to creat 2 db tables. Use mysql/mariadb:
 ```
   i. Users table: It will contain all the users
   ii. Addresses table: It will contain addresses of users
