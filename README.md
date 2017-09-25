@@ -1,7 +1,3 @@
-### Una vez que este terminado el siguiente ejercisio,
-### favor de subirlo a un repositorio publico en github y mandarnos el link,
-### con su respectivo README de como ejecutar el proyecto.
-
 You need to create a django project to manage admins of our admin panel.
 
 The objective of the project is to provide the users a means to use the same platform in a restricted manner.
