@@ -1,7 +1,17 @@
 from django.contrib import admin
 from users.models import AdminUser, StaffUser, CostomerServiceUser
-from users.models import ClientUser
+from users.models import ClientUser, Address
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
+
+class AddressInline(admin.TabularInline):
+    '''
+    Tabular Inline View for Address
+    '''
+    model = Address
+    min_num = 1
+    max_num = 20
+    extra = 0
 
 
 class UserSystemAdmin(BaseUserAdmin):
@@ -44,6 +54,7 @@ class ClientUserAdmin(admin.ModelAdmin):
         Admin View for ClientUser
     '''
     list_display = ('get_username', 'email')
+    inlines = [AddressInline]
     list_filter = ('email',)
     search_fields = ['email']
 
@@ -52,3 +63,13 @@ class ClientUserAdmin(admin.ModelAdmin):
         return qs.filter(is_staff=False, is_superuser=False)
 
 admin.site.register(ClientUser, ClientUserAdmin)
+
+
+class AddressAdmin(admin.ModelAdmin):
+    '''
+        Admin View for Address
+    '''
+    list_display = ('state', 'suburb')
+    list_filter = ('state', 'suburb', 'municipality')
+    search_fields = ['state', 'suburb', 'municipality']
+admin.site.register(Address, AddressAdmin)
