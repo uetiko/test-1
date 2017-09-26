@@ -1,3 +1,4 @@
 **/.*.swp
 .ropeproject/
 dev_start.sh
+**/__pycache__/*
