@@ -17,3 +17,27 @@ iii. Customer service user: He can view just the addresses table, but cannot do 
 ```
 
 PS: There is no need to beautify the project. It should be simple and functional.
+
+Django project testing
+=====================
+
+## Install project
+
+```sh
+python3.6 -m venv /opt/envs/test-1
+
+source /opt/envs/test-1/bin/activate
+
+pip install -r requirements
+
+django-admin startproject
+```
+
+## Create database in mysql.
+
+```sql
+create user if not exists test_1 identified by '5M563nu6M5dcf56wc&';
+create database test_1 character set utf8;
+grant all privileges on test_1.* to test_1 identified by '5M563nu6M5dcf56wc&';
+
+```
