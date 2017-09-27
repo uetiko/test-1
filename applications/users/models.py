@@ -18,6 +18,11 @@ class StaffUser(User):
     class Meta:
         proxy = True
         verbose_name = 'staff'
+        permissions = (
+            ('add_address', 'Can add address'),
+            ('change_address', 'Can change address'),
+            ('delete_address', 'Can delete address'),
+        )
 
 
 class CostomerServiceUser(User):
@@ -34,6 +39,9 @@ class ClientUser(User):
     class Meta:
         proxy = True
         verbose_name = 'Cliente'
+        permissions = (
+            ('view_clientuser', 'can see client user'),
+        )
 
 
 class Address(models.Model):
@@ -80,3 +88,8 @@ class Address(models.Model):
         blank=False,
         default=0
     )
+
+    class Meta:
+        permissions = (
+            ('view_address', 'can see address'),
+        )

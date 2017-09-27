@@ -2,3 +2,4 @@
 .ropeproject/
 dev_start.sh
 **/__pycache__/*
+**/*.pyc
