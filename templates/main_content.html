@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block structure %}
+<header>
+    header content
+</header>
+<nav>
+    navigation links
+</nav>
+<section>
+    {% block content %}main content{% endblock %}
+</section>
+<footer>
+    footer content
+</footer>
+{% endblock %}
