@@ -6,6 +6,7 @@
 {% if clients|length > 0 %}
     <h2>client</h2>
     <div class="container">
+        {% if permissions != 'view_address'%}
         {% for client in clients %}
         <div class="row">
             <div class="col-mod-12" style="margin-botton: 6px">
@@ -38,5 +39,15 @@
         </div>
     </div>
     {% endfor %}
+    {% else %}
+        {% for addss in addresses %}
+            Estado: {{ addss.state }}<br>
+            Municipio/delegación: {{ addss.municipality }}
+            Colonia: {{ addss.suburb }}<br>
+            Calle: {{ addss.street }}<br>
+            Número exterior: {{ addss.outdoor }}<br>
+            Código postal: {{ addss.zipcode }}<br><br>
+        {% endfor %}
+    {% endif %
 {% endif %}
 {% endblock %}

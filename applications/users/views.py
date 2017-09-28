@@ -27,12 +27,23 @@ class DataView(View):
     __qs = ClientUser.objects.all()
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {
-            'clients': self.__qs.filter(
-                is_staff=False, is_superuser=False
-            ),
-            'addresses': Address.objects.all()
-        })
+        if request.user.has_perms(
+            'users.add_clientuser',
+            'users.change_clientuser', 'users.delete_clientuser'
+        ):
+            return render(request, self.template_name, {
+                'clients': self.__qs.filter(
+                    is_staff=False, is_superuser=False
+                ),
+                'addresses': Address.objects.all()
+            })
+        if not request.user.has_perms(
+            'users.change_clientuser', 'users.delete_clientuser'
+        ) and request.user.has_perms('view_address'):
+            return render(request, self.template_name, {
+                'permissions':  'view_address',
+                'addresses': Address.objects.all()
+            })
 
 
 class DataAddView(View):
@@ -58,7 +69,7 @@ class DataAddView(View):
                 'formaddress': AddressForm()
             })
             self.__context.update()
-        elif isinstance(user, CostomerServiceUser):
+        elif user.has_perms('view_address'):
             self.__context.update()
 
     def __del__(self):
@@ -117,8 +128,10 @@ class DataUpdateView(View):
                 'formaddress': addressForm
             })
             self.__context.update()
-        elif isinstance(user, CostomerServiceUser):
-            self.__context.update()
+        elif user.has_perms('view_address') and not user.has_perms(
+            'change_address'
+        ):
+            self.__context = {}
 
 
 class DataDeleteView(View):
