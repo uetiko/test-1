@@ -1,12 +1,12 @@
 {% extends 'main_content.html' %}
-{% block title %}Add form{% endblock %}
+{% block title %}update{% endblock %}
 
 {% block content %}
 <h2>form</h2>
 <form action="" method="post" accept-charset="utf-8">
     {% csrf_token %}
-    {{ formclient.as_p }}
-    {{ formaddress.as_p }}
+    {{ clientform.as_p }}
+    {{ addressform.as_p }}
     <button type="submit">submit</button>
 </form>
 {% endblock %}

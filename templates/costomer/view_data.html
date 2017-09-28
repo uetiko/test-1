@@ -10,10 +10,22 @@
         <div class="row">
             <div class="col-mod-12" style="margin-botton: 6px">
                 <div class="col-md-8">
-                    User: {{client.username}}<br>
+                    <fieldset id="user:_{{client.username}}" class="">
+                        <legend>User: {{client.username}}</legend>
                     Nombre: {{client.first_name}}<br>
                     Apellido: {{client.last_name}}<br>
                     email: {{client.email}}<br><br>
+                    {% for addss in addresses %}
+                        {% if addss.user_id == client.id %}
+                            Estado: {{ addss.state }}<br>
+                            Municipio/delegación: {{ addss.municipality }}
+                            Colonia: {{ addss.suburb }}<br>
+                            Calle: {{ addss.street }}<br>
+                            Número exterior: {{ addss.outdoor }}<br>
+                            Código postal: {{ addss.zipcode }}<br><br>
+                        {% endif %}
+                    {% endfor %}
+                    </fieldset>
                 </div> 
                 <div class="col-md-2">
                     <a href="{% url 'update_client' client.id %}">Modificar</a>
