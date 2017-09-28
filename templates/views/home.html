@@ -1,0 +1,11 @@
+{% extends 'main_content.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<h2>hola!</h2>
+<p>Ve los <span><a href="/costomer/data/">datos</a></span></p>
+{% else %}
+Nomas no paso nada
+{% endif %}
+{% endblock %}

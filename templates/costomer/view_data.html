@@ -1,0 +1,30 @@
+{% extends 'main_content.html' %}
+{% block title %}list{% endblock %}
+
+{% block content %}
+<h2>info</h2>
+{% if clients|length > 0 %}
+    <h2>client</h2>
+    <div class="container">
+        {% for client in clients %}
+        <div class="row">
+            <div class="col-mod-12" style="margin-botton: 6px">
+                <div class="col-md-8">
+                    User: {{client.username}}<br>
+                    Nombre: {{client.first_name}}<br>
+                    Apellido: {{client.last_name}}<br>
+                    email: {{client.email}}<br><br>
+                </div> 
+                <div class="col-md-2">
+                    <a href="{% url 'update_client' client.id %}">Modificar</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'delete_client' client.id %}">eliminar</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}
