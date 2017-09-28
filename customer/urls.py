@@ -16,10 +16,26 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.views.generic.base import TemplateView
+from users.views import HomeView
+from users.views import DataView
+from users.views import HomeLoginView
+from users.views import DataAddView, DataUpdateView, DataDeleteView
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^$', HomeView.as_view(), name='home'),
+    url(r'^view/$', HomeLoginView.as_view(), name='login_home'),
+    url(r'^costomer/data/$', DataView.as_view(), name='data_view'),
+    url(r'^costomer/data/add/$', DataAddView.as_view(), name='add_client'),
+    url(
+        r'^costomer/data/update/(?P<clientid>\d+)/$',
+        DataUpdateView.as_view(),
+        name='update_client'
+    ),
+    url(
+        r'^costomer/data/delete/(?P<clientid>\d+)/$',
+        DataDeleteView.as_view(),
+        name='delete_client'
+    ),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {
         'template_name': 'logged_out.html',
