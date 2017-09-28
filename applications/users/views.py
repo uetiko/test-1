@@ -1,8 +1,10 @@
 from django.views.generic.base import TemplateView
 from django.views import View
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from users.models import AdminUser, StaffUser, CostomerServiceUser
 from users.models import ClientUser, Address
 from users.forms import ClientUserForm, AddressForm
@@ -28,7 +30,8 @@ class DataView(View):
         return render(request, self.template_name, {
             'clients': self.__qs.filter(
                 is_staff=False, is_superuser=False
-            ), 'addresses': Address()
+            ),
+            'addresses': Address.objects.all()
         })
 
 
@@ -40,10 +43,20 @@ class DataAddView(View):
         self.__create_context(request.user)
         return render(request, self.template_name, self.__context)
 
+    def get(self, request, *args, **kwargs):
+        self.__create_context(request.user)
+        return render(request, self.template_name, self.__context)
+
     def __create_context(self, user):
-        if isinstance(user, AdminUser):
-            self.__context.update(dict(form=ClientUserForm()))
-        elif isinstance(user, StaffUser):
+        if user.is_superuser and user.is_staff:
+            self.__context = {
+                'formclient': ClientUserForm(),
+                'formaddress': AddressForm()
+            }
+        elif user.is_staff and not user.is_superuser:
+            self.__context.update({
+                'formaddress': AddressForm()
+            })
             self.__context.update()
         elif isinstance(user, CostomerServiceUser):
             self.__context.update()
@@ -53,8 +66,60 @@ class DataAddView(View):
 
 
 class DataUpdateView(View):
-    pass
+    template_name = 'costomer/view_data_update.html'
+    __context = dict()
+
+    def get(self, request, clientid, *args, **kwargs):
+        self.__create_context(request.user, clientid)
+        return render(request, self.template_name, self.__context)
+
+    def post(self, request, clientid, *args, **kwargs):
+        try:
+            client = ClientUser.objects.get(pk=clientid)
+            address = Address.objects.get(user=client)
+        except ObjectDoesNotExist as e:
+            pass
+        except MultipleObjectsReturned as e:
+            pass
+
+        clientForm = ClientUserForm(request.POST, instance=client)
+        addressForm = AddressForm(
+            request.POST, instance=Address(user=client, pk=address.id)
+        )
+        if clientForm.is_valid() and addressForm.is_valid():
+            clientForm.save()
+            addressForm.save()
+            return HttpResponseRedirect('/costomer/data/')
+
+        return render(request, self.template_name, self.__context)
+
+    def __create_context(self, user, clientid):
+        try:
+            client = ClientUser.objects.get(pk=clientid)
+            address = Address.objects.get(user=client)
+        except ObjectDoesNotExist as e:
+            pass
+        except MultipleObjectsReturned as e:
+            pass
+
+        clientForm = ClientUserForm(request.POST, instance=client)
+        addressForm = AddressForm(
+            request.POST, instance=Address(user=client, pk=address.id)
+        )
+
+        if user.is_superuser and user.is_staff:
+            self.__context = {
+                'formclient': clientForm,
+                'formaddress': addressForm
+            }
+        elif user.is_staff and not user.is_superuser:
+            self.__context.update({
+                'formaddress': addressForm
+            })
+            self.__context.update()
+        elif isinstance(user, CostomerServiceUser):
+            self.__context.update()
 
 
 class DataDeleteView(View):
-    pass
+    template_name = 'costomer/view_data_delete.html'
